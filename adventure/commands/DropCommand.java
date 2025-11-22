@@ -1,7 +1,6 @@
 package adventure.commands;
 
 import adventure.game.*;
-import adventure.core.*;
 
 public class DropCommand implements Command {
     public void execute(GameState state, String item) {

@@ -7,7 +7,7 @@ public class HelpCommand implements Command {
         System.out.println("Comandos:");
         System.out.println(" ir <dir>");
         System.out.println(" mirar");
-        System.out.println(" tomar <obj>");
+        System.out.println(" tomar <obj>    (máximo " + state.getInventory().getCapacity() + " objetos)");
         System.out.println(" soltar <obj>");
         System.out.println(" inventario");
         System.out.println(" ayuda");
