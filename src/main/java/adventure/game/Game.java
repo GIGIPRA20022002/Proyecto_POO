@@ -2,7 +2,6 @@ package adventure.game;
 
 import java.util.Scanner;
 import adventure.core.*;
-import adventure.items.*;
 import adventure.commands.*;
 
 public class Game {
@@ -17,7 +16,7 @@ public class Game {
     }
 
     public void start() {
-        System.out.println("Bienvenido al juego (versión simplificada estilo A).");
+        System.out.println("Welcome to the Text Adventure Game!");
 
         while (true) {
             System.out.print("> ");
@@ -31,17 +30,18 @@ public class Game {
             Command c = null;
 
             switch (cmd) {
-                case "ir": c = new MoveCommand(); break;
-                case "mirar": c = new LookCommand(); break;
-                case "tomar": c = new TakeCommand(); break;
-                case "soltar": c = new DropCommand(); break;
-                case "inventario": c = new InventoryCommand(); break;
-                case "ayuda": c = new HelpCommand(); break;
-                case "salir": 
-                    System.out.println("Saliendo.");
+                case "go": c = new MoveCommand(); break;
+                case "look": c = new LookCommand(); break;
+                case "take": c = new TakeCommand(); break;
+                case "drop": c = new DropCommand(); break;
+                case "use": c = new UseCommand(); break;
+                case "inventory": c = new InventoryCommand(); break;
+                case "help": c = new HelpCommand(); break;
+                case "quit": 
+                    System.out.println("Goodbye!");
                     return;
                 default:
-                    System.out.println("Comando no reconocido.");
+                    System.out.println("Command not recognized.");
             }
 
             if (c != null) {
