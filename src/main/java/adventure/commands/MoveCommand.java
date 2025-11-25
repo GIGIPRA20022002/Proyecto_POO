@@ -18,4 +18,6 @@ public class MoveCommand implements Command {
             System.out.println(next.getDescription());
         }
     }
+    
+
 }

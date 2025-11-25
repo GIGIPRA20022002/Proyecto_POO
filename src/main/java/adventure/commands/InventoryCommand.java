@@ -17,4 +17,5 @@ public class InventoryCommand implements Command {
             state.getInventory().getCapacity() + "): " + 
             itemNames);
     }
+
 }

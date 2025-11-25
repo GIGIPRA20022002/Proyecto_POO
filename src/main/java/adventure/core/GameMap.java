@@ -11,18 +11,17 @@ public class GameMap {
         Location start = new Location("Entrance", "A simple starting point.");
         Location hall = new Location("Hall", "A quiet hall.");
 
+        // En el constructor de GameMap, después de crear las ubicaciones:
         start.addExit("north", hall);
         hall.addExit("south", start);
 
-        // Add more items to test limits
+        // Añadir items específicos para probar 'use'
         start.addItem("flashlight");
         start.addItem("map");
-        start.addItem("compass");
-        start.addItem("water");
-        start.addItem("food");
-        start.addItem("rope"); // This will be the sixth item (exceeds limit)
-        
-        hall.addItem("key");
+        start.addItem("key");  // Este item será usado en el ejemplo
+        hall.addItem("potion");
+
+        System.out.println("Map loaded with 2 locations and example items for testing 'use' command.");
 
         locations.put("start", start);
         locations.put("hall", hall);
