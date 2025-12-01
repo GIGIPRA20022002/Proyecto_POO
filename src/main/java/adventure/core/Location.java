@@ -1,13 +1,15 @@
 package adventure.core;
 
 import java.util.*;
+
+import adventure.items.BasicItem;
 import adventure.items.Item;
 
 public class Location {
     private String name;
     private String description;
     private Map<String, Location> exits;
-    private List<Item> items;  // Cambiar de String a Item
+    private List<Item> items;
 
     public Location(String name, String desc) {
         this.name = name;
@@ -16,6 +18,9 @@ public class Location {
         this.items = new ArrayList<>();
     }
 
+    // =============================
+    // EXITS
+    // =============================
     public void addExit(String dir, Location loc) {
         exits.put(dir, loc);
     }
@@ -24,21 +29,52 @@ public class Location {
         return exits.get(dir);
     }
 
-    public void addItem(String itemName) { 
-        items.add(new Item(itemName, "Un " + itemName + " común.")); 
+    // =============================
+    // ITEMS (VERSIÓN CORRECTA)
+    // =============================
+
+    /** Añadir un Item real (usado por Take, Drop, etc.) */
+    public void addItem(Item item) {
+        items.add(item);
     }
-    
-    public boolean removeItem(String itemName) { 
-        for (Item item : items) {
+
+    /** Compatibilidad: crear un BasicItem si solo te dan un String */
+    public void addItem(String itemName) {
+        items.add(new BasicItem(itemName, "Un " + itemName + " común.", 1.0));
+    }
+
+    /** Eliminar por nombre */
+    public boolean removeItem(String itemName) {
+        Iterator<Item> it = items.iterator();
+        while (it.hasNext()) {
+            Item item = it.next();
             if (item.getName().equalsIgnoreCase(itemName)) {
-                items.remove(item);
+                it.remove();
                 return true;
             }
         }
         return false;
     }
-    
-    public List<Item> getItems() { return items; }
-    public String getDescription() { return description; }
-    public String getName() { return name; }
+
+    /** Obtener un item exacto */
+    public Item getItem(String itemName) {
+        for (Item item : items) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

@@ -1,21 +1,18 @@
 package adventure.commands;
 
 import adventure.game.*;
-import adventure.items.Item;  // ← AÑADIR ESTE IMPORT
-import java.util.List;       // ← AÑADIR ESTE IMPORT  
-import java.util.ArrayList;  // ← AÑADIR ESTE IMPORT
+import adventure.items.Item;
+import java.util.List;
+import java.util.ArrayList;
 
 public class InventoryCommand implements Command {
     public void execute(GameState state, String arg) {
-        List<String> itemNames = new ArrayList<>();
-        for (Item item : state.getInventory().getItems()) {
-            itemNames.add(item.getName());
-        }
-        
-        System.out.println("Inventory (" + 
-            state.getInventory().getCurrentSize() + "/" + 
-            state.getInventory().getCapacity() + "): " + 
-            itemNames);
-    }
+        Item item = state.getInventory().getContainedItem();
 
+        if (item == null) {
+            System.out.println("Inventory: (0/1) []");
+        } else {
+            System.out.println("Inventory: (1/1) [" + item.getName() + "]");
+        }
+    }
 }

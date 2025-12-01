@@ -2,6 +2,7 @@ package adventure.commands;
 
 import adventure.game.*;
 import adventure.core.*;
+import adventure.items.BasicItem;
 import adventure.items.Item;
 
 public class TakeCommand implements Command {
@@ -19,7 +20,8 @@ public class TakeCommand implements Command {
         Location loc = state.getCurrent();
         if (loc.removeItem(itemName)) {
             // Crear un objeto Item y añadirlo al inventario
-            Item newItem = new Item(itemName, "A " + itemName + ".");
+            Item newItem = new BasicItem(itemName, "A " + itemName + ".", 1.0);
+
             state.getInventory().add(newItem);  // ← Ahora usa Item, no String
             System.out.println("You took: " + itemName);
             System.out.println("Backpack space: " + 

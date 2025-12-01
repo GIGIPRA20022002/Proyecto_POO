@@ -26,10 +26,12 @@ public class UseCommand implements Command {
             // use item target
             result = "You try to use " + itemName + " on " + targetName + "... ";
             // Por ahora no hay sistema de targets, pero la estructura está lista
-            result += item.use(null, null);
+            result += item.use();
+
         } else {
             // use item
-            result = item.use(null, null);
+            result = item.use();
+
         }
 
         System.out.println(result);
