@@ -2,7 +2,6 @@ package adventure.commands;
 
 import adventure.game.*;
 import adventure.core.*;
-import adventure.items.BasicItem;
 import adventure.items.Item;
 
 public class TakeCommand implements Command {
@@ -18,18 +17,29 @@ public class TakeCommand implements Command {
         }
 
         Location loc = state.getCurrent();
-        if (loc.removeItem(itemName)) {
-            // Crear un objeto Item y añadirlo al inventario
-            Item newItem = new BasicItem(itemName, "A " + itemName + ".", 1.0);
-
-            state.getInventory().add(newItem);  // ← Ahora usa Item, no String
-            System.out.println("You took: " + itemName);
-            System.out.println("Backpack space: " + 
-                state.getInventory().getCurrentSize() + "/" + 
-                state.getInventory().getCapacity());
+        
+        // Buscar el item REAL en la sala (no crear uno nuevo)
+        Item itemToTake = loc.getItem(itemName);
+        
+        if (itemToTake != null) {
+            // Intentar añadir el item real al inventario
+            if (state.getInventory().add(itemToTake)) {
+                loc.removeItem(itemName);
+                System.out.println("You took: " + itemName);
+                System.out.println("Backpack space: " + 
+                    state.getInventory().getCurrentSize() + "/" + 
+                    state.getInventory().getCapacity());
+                
+                // DEBUG: Mostrar tipo de item
+                System.out.println("DEBUG: This is a " + itemToTake.getClass().getSimpleName());
+                if (itemToTake instanceof adventure.items.Key) {
+                    System.out.println("DEBUG: It's definitely a Key!");
+                }
+            } else {
+                System.out.println("Couldn't take " + itemName + ".");
+            }
         } else {
             System.out.println("There is no '" + itemName + "' here.");
         }
     }
-       
 }

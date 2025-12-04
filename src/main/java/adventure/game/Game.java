@@ -9,30 +9,96 @@ public class Game {
     private GameState state;
     private Scanner scanner;
     private CommandParser parser;
+    private boolean restartRequested;
 
     public Game() {
+        restartRequested = false;
+        initializeGame();
+    }
+
+    private void initializeGame() {
         map = new GameMap();
         state = new GameState(map);
         scanner = new Scanner(System.in);
-        parser = new CommandParser(); // Nuevo parser
+        parser = new CommandParser();
     }
 
     public void start() {
-        System.out.println("Welcome to the Adventure Game!");
-        System.out.println("Type 'help' for available commands.");
+        boolean playing = true;
+        
+        while (playing) {
+            // Mostrar introducción solo al inicio
+            showIntroduction();
+            
+            // Bucle principal del juego
+            while (true) {
+                System.out.print("\n> ");
+                String input = scanner.nextLine().trim();
+                
+                if (input.isEmpty()) continue;
+                
+                // Comando especial: restart
+                if (input.equalsIgnoreCase("restart")) {
+                    System.out.println("\n========================================");
+                    System.out.println("          RESTARTING GAME...");
+                    System.out.println("========================================");
+                    restartRequested = true;
+                    break;
+                }
+                
+                Command command = parser.parse(input);
+                
+                if (command == null) {
+                    System.out.println("Unknown command. Type 'help'.");
+                    continue;
+                }
 
-        while (true) {
-            System.out.print("> ");
-            String input = scanner.nextLine().trim();
-            
-            Command command = parser.parse(input);
-            
-            if (command == null) {
-                System.out.println("I don't understand. Type 'help' for available commands.");
-                continue;
+                command.execute(state);
+                
+                // Verificar condiciones de fin de juego
+                if (checkGameEnd()) {
+                    break;
+                }
             }
-
-            command.execute(state);
+            
+            // Si se solicitó restart, reiniciar y continuar
+            if (restartRequested) {
+                restartRequested = false;
+                initializeGame(); // Reiniciar todo
+                continue; // Volver al inicio del bucle principal
+            } else {
+                playing = false; // Salir del juego
+            }
         }
+        
+        scanner.close();
+    }
+
+    private void showIntroduction() {
+        System.out.println("========================================");
+        System.out.println("         DUNGEON ADVENTURE");
+        System.out.println("========================================");
+        System.out.println("Your goal: Reach the final exit (Room 4).");
+        System.out.println("Be careful: You can only carry ONE item at a time.");
+        System.out.println("Each action consumes your energy...");
+        System.out.println("Type 'restart' to start over anytime.");
+        System.out.println("Type 'help' for commands.");
+        System.out.println("========================================");
+        System.out.println(state.getCurrent().getFullDescription());
+    }
+
+    private boolean checkGameEnd() {
+        // Verificar muerte
+        if (!state.getHero().isAlive()) {
+            System.out.println("\n========================================");
+            System.out.println("           GAME OVER");
+            System.out.println("Your health reached 0. You died.");
+            System.out.println("Type 'restart' to try again.");
+            System.out.println("========================================");
+            return true;
+        }
+        
+        // Verificar victoria (esto debería manejarse en MoveCommand)
+        return false;
     }
 }

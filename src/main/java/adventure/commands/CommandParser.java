@@ -13,34 +13,47 @@ public class CommandParser {
         setupSynonyms();
     }
 
-    private void setupCommands() {
-        commands.put("go", new MoveCommand());
-        commands.put("look", new LookCommand());
-        commands.put("take", new TakeCommand());
-        commands.put("drop", new DropCommand());
-        commands.put("use", new UseCommand());
-        commands.put("inventory", new InventoryCommand());
-        commands.put("help", new HelpCommand());
-        commands.put("quit", null); // Special case
-    }
+private void setupCommands() {
+    commands.put("go", new MoveCommand());
+    commands.put("look", new LookCommand());
+    commands.put("take", new TakeCommand());
+    commands.put("drop", new DropCommand());
+    commands.put("use", new UseCommand());
+    commands.put("attack", new AttackCommand());
+    commands.put("open", new OpenCommand());
+    commands.put("inventory", new InventoryCommand());
+    commands.put("help", new HelpCommand());
+    commands.put("restart", new RestartCommand());  // ← NUEVO
+    commands.put("quit", null);
+}
 
-    private void setupSynonyms() {
-        // Sinónimos para comandos comunes
-        synonyms.put("move", "go");
-        synonyms.put("walk", "go");
-        synonyms.put("run", "go");
-        synonyms.put("grab", "take");
-        synonyms.put("pick", "take");
-        synonyms.put("get", "take");
-        synonyms.put("examine", "look");
-        synonyms.put("see", "look");
-        synonyms.put("view", "look");
-        synonyms.put("i", "inventory");
-        synonyms.put("inv", "inventory");
-        synonyms.put("?", "help");
-        synonyms.put("exit", "quit");
-        synonyms.put("leave", "quit");
-    }
+
+private void setupSynonyms() {
+    // Sinónimos existentes...
+    synonyms.put("move", "go");
+    synonyms.put("walk", "go");
+    synonyms.put("run", "go");
+    synonyms.put("grab", "take");
+    synonyms.put("pick", "take");
+    synonyms.put("get", "take");
+    synonyms.put("examine", "look");
+    synonyms.put("see", "look");
+    synonyms.put("view", "look");
+    synonyms.put("i", "inventory");
+    synonyms.put("inv", "inventory");
+    synonyms.put("?", "help");
+    synonyms.put("exit", "quit");
+    synonyms.put("leave", "quit");
+    
+    // Nuevos sinónimos
+    synonyms.put("unlock", "open");
+    synonyms.put("fight", "attack");
+    synonyms.put("kill", "attack");
+    synonyms.put("hit", "attack");
+    synonyms.put("reset", "restart");
+    synonyms.put("new", "restart");
+    synonyms.put("startover", "restart");
+}
 
     public Command parse(String input) {
         if (input == null || input.trim().isEmpty()) {

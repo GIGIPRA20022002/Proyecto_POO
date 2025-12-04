@@ -2,8 +2,7 @@ package adventure.commands;
 
 import adventure.game.*;
 import adventure.items.Item;
-import java.util.List;
-import java.util.ArrayList;
+
 
 public class InventoryCommand implements Command {
     public void execute(GameState state, String arg) {

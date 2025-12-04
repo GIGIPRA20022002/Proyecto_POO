@@ -5,45 +5,34 @@ import adventure.items.Item;
 import adventure.items.Weapon;
 import adventure.spells.Fireball;
 
-/**
- * Clase del héroe/jugador con sistema de inventario limitado a 1 item
- * y capacidad de usar bola de fuego.
- */
-public class Hero {
-    private String name;
-    private int healthPoints;
-    private int maxHealthPoints;
+public class Hero extends Character {
     private Backpack backpack;
-    private Fireball fireball; // El hechizo de bola de fuego
+    private Fireball fireball;
+    private int actionsCount; // Para contar acciones y perder vida
 
-    public Hero(String name, int maxHealthPoints) {
-        this.name = name;
-        this.maxHealthPoints = maxHealthPoints;
-        this.healthPoints = maxHealthPoints;
-        this.fireball = null; // Inicialmente sin hechizo
-        
-        // Crear una mochila que solo permite 1 item
-        this.backpack = new Backpack("Backpack",
-                "A backpack to carry 1 item",
-                0.5, 5.0);
+    public Hero(String name, int maxHealth) {
+        super(name, maxHealth);
+        this.backpack = new Backpack("Backpack", "Your backpack", 0.5, 10);
+        this.fireball = null;
+        this.actionsCount = 0;
     }
 
-    /**
-     * Aprender el hechizo de bola de fuego
-     */
+    // ===== SISTEMA DE ACCIONES Y VIDA =====
+    public void performAction() {
+        actionsCount++;
+        // Cada 3 acciones, pierde 1 de vida
+        if (actionsCount % 3 == 0) {
+            takeDamage(1);
+            System.out.println("You feel tired... (-1 HP)");
+        }
+    }
+
+    // ===== MÉTODOS DE HECHIZOS =====
     public void learnFireball() {
         if (fireball == null) {
             fireball = new Fireball();
+            fireball.learn();
         }
-        fireball.learn();
-    }
-
-    /**
-     * Aprender un hechizo específico
-     */
-    public void learnFireball(Fireball spell) {
-        this.fireball = spell;
-        fireball.learn();
     }
 
     public Fireball getFireball() {
@@ -54,59 +43,53 @@ public class Hero {
         return fireball != null && fireball.isLearned();
     }
 
-    /**
-     * Atacar a un monstruo usando el arma actual o bola de fuego
-     */
-    public boolean attackMonster(Monster monster, boolean useFireball) {
+    // ===== MÉTODOS DE MOCHILA =====
+    public Backpack getBackpack() {
+        return backpack;
+    }
+
+    public boolean takeItem(Item item) {
+        performAction(); // Contar como acción
+        return backpack.addItem(item);
+    }
+
+    public Item dropItem(String itemName) {
+        performAction(); // Contar como acción
+        return backpack.remove(itemName);
+    }
+
+    public Item getItem(String itemName) {
+        return backpack.findItem(itemName);
+    }
+
+    // ===== ATAQUE SIMPLIFICADO =====
+    public String attackMonster(Monster monster, boolean useFireball) {
+        performAction(); // Contar como acción
+        
         if (useFireball && knowsFireball()) {
-            return monster.attackWithFireball(fireball);
-        } else {
-            // Buscar un arma en la mochila
-            Item currentItem = backpack.getContainedItem();
-            if (currentItem instanceof Weapon) {
-                return monster.attackWithWeapon((Weapon) currentItem);
-            } else {
-                System.out.println("You've got not weapon equipped for attack.");
-                return false;
+            if (monster.attackWithFireball(fireball)) {
+                return "You cast Fireball and defeat " + monster.getName() + "!";
             }
-        }
-    }
-
-    /**
-     * Método general de ataque (para comandos)
-     */
-    public String attack(String target, boolean useFireball) {
-        // Este método se integraría con tu sistema de comandos
-        // target sería el nombre del monstruo
-        return "Comannd ATTACK implemented here...";
-    }
-
-    // ... resto de los métodos existentes de Hero (takeItem, dropItem, etc.)
-    
-    /**
-     * Mostrar habilidades del héroe
-     */
-    public String showAbilities() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Hero abilities ").append(name).append(":\n");
-        
-        // Ver si tiene arma
-        Item currentItem = backpack.getContainedItem();
-        if (currentItem instanceof Weapon) {
-            Weapon weapon = (Weapon) currentItem;
-            sb.append("- Weapon: ").append(weapon.getName());
-            sb.append(weapon.isEquipped() ? " (equipped)" : " (not equipped)").append("\n");
-        }
-        
-        // Ver si tiene bola de fuego
-        if (knowsFireball()) {
-            sb.append("- Spell: ").append(fireball.toString()).append("\n");
+            return "Fireball failed against " + monster.getName();
         } else {
-            sb.append("- Spell: No spell known\n");
+            Item item = backpack.getContainedItem();
+            if (item instanceof Weapon) {
+                if (monster.attackWithWeapon((Weapon) item)) {
+                    return "You attack with " + item.getName() + " and defeat " + monster.getName() + "!";
+                }
+                return "Your weapon is ineffective against " + monster.getName();
+            }
+            return "You have no weapon to attack with!";
         }
-        
+    }
+
+    // ===== INFO =====
+    public String showStatus() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== ").append(name).append(" ===\n");
+        sb.append("HP: ").append(health).append("/").append(maxHealth).append("\n");
+        sb.append("Fireball: ").append(knowsFireball() ? "LEARNED" : "NOT LEARNED").append("\n");
+        sb.append(backpack.showContents()).append("\n");
         return sb.toString();
     }
-
-    //FALTA AÑADIR QUE CUANDO EL HEROE HAGA UNA ACCION (COMANDO) PIERDA 1 PUNTO DE VIDA
 }
