@@ -10,39 +10,15 @@ public class Backpack extends Item {
         this.containedItem = null;
     }
 
-    // =========================================================
-    // MÉTODOS ORIGINALES (NO LOS TOCO)
-    // =========================================================
-
-    public double getMaxCapacity() {
-        return maxCapacity;
-    }
-
-    public Item getContainedItem() {
-        return containedItem;
-    }
-
-    public double getTotalWeight() {
-        return getWeight() + (containedItem != null ? containedItem.getWeight() : 0);
-    }
-
-    public double getAvailableSpace() {
-        double currentItemWeight = containedItem != null ? containedItem.getWeight() : 0;
-        return maxCapacity - currentItemWeight;
-    }
-
-    public boolean isEmpty() {
-        return containedItem == null;
-    }
-
-    public boolean isFull() {
-        return containedItem != null;
-    }
+    public double getMaxCapacity() { return maxCapacity; }
+    public Item getContainedItem() { return containedItem; }
+    public double getTotalWeight() { return getWeight() + (containedItem != null ? containedItem.getWeight() : 0); }
+    public double getAvailableSpace() { return maxCapacity - (containedItem != null ? containedItem.getWeight() : 0); }
+    public boolean isEmpty() { return containedItem == null; }
+    public boolean isFull() { return containedItem != null; }
 
     public boolean canAddItem(Item item) {
-        return item.isCollectible() &&
-                isEmpty() &&
-                item.getWeight() <= maxCapacity;
+        return item.isCollectible() && isEmpty() && item.getWeight() <= maxCapacity;
     }
 
     public boolean addItem(Item item) {
@@ -92,7 +68,7 @@ public class Backpack extends Item {
 
     public String showContents() {
         if (isEmpty()) {
-            return "Backpack is empty. You can carry 1 item up to " + maxCapacity + " kg.";
+            return "Backpack is empty. Capacity: " + maxCapacity + " kg.";
         }
         return "Backpack contains: " + containedItem.toString();
     }
@@ -104,42 +80,21 @@ public class Backpack extends Item {
 
     @Override
     public String toString() {
-        if (isEmpty())
-            return super.toString() + " [Empty Backpack - " + maxCapacity + "kg]";
+        if (isEmpty()) return super.toString() + " [Empty Backpack]";
         return super.toString() + " [Contains: " + containedItem.getName() + "]";
     }
 
-
-    // =========================================================
-    // 🔥 MÉTODOS COMPATIBLES CON INVENTORY (NECESARIOS PARA LOS COMANDOS)
-    // =========================================================
-
-    // compatibility with inventory.add(Item)
-    public boolean add(Item item) {
-        return addItem(item);
-    }
-
-    // compatibility with inventory.remove(String)
+    // Métodos compatibles con Inventory
+    public boolean add(Item item) { return addItem(item); }
+    
     public Item remove(String itemName) {
-        if (containedItem != null &&
-            containedItem.getName().equalsIgnoreCase(itemName)) {
+        if (containedItem != null && containedItem.getName().equalsIgnoreCase(itemName)) {
             return removeItem();
         }
         return null;
     }
 
-    // compatibility with inventory.getItem(String)
-    public Item getItem(String itemName) {
-        return findItem(itemName);
-    }
-
-    // compatibility with inventory.getCapacity()
-    public int getCapacity() {
-        return 1; // solo puede contener 1 item
-    }
-
-    // compatibility with inventory.getCurrentSize()
-    public int getCurrentSize() {
-        return isEmpty() ? 0 : 1;
-    }
+    public Item getItem(String itemName) { return findItem(itemName); }
+    public int getCapacity() { return 1; }
+    public int getCurrentSize() { return isEmpty() ? 0 : 1; }
 }

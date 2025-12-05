@@ -12,9 +12,6 @@ public class ParsedCommand implements Command {
     }
 
     public void execute(GameState state, String arg) {
-        // Ignorar el arg que viene y usar el que ya tenemos
         realCommand.execute(state, argument);
     }
-    
-    // El método execute(GameState) se hereda automáticamente del default
 }

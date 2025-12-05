@@ -7,48 +7,24 @@ public abstract class Item {
     private boolean isCollectible;
 
     public Item(String name, String description, double weight, boolean isCollectible) {
-    this.name = name;
-    this.description = description;
-    this.weight = weight;
-    this.isCollectible = isCollectible;
+        this.name = name;
+        this.description = description;
+        this.weight = weight;
+        this.isCollectible = isCollectible;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public double getWeight() { return weight; }
+    public boolean isCollectible() { return isCollectible; }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public boolean isCollectible() {
-        return isCollectible;
-    }
-
-    /**
-    * Método abstracto que define cómo se usa el item
-    * @return Mensaje que describe el resultado de usar el item
-    */
     public abstract String use();
 
-    /**
-    * Método que proporciona una descripción detallada del item
-    * @return String con la información del item
-    */
     @Override
     public String toString() {
         return String.format("%s: %s (Weight: %.1f)", name, description, weight);
     }
-        
-    /**
-    * Método para comparar items por nombre
-    * @param obj Otro objeto a comparar
-    * @return true si los items tienen el mismo nombre
-    */
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -61,7 +37,4 @@ public abstract class Item {
     public int hashCode() {
         return name.hashCode();
     }
-
-
-
 }

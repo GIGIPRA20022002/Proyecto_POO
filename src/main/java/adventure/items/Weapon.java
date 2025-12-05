@@ -12,59 +12,35 @@ public class Weapon extends Item {
         this.isEquipped = false;
     }
 
-    public int getDamage() {
-        return damage;
-    }
+    public int getDamage() { return damage; }
+    public int getDurability() { return durability; }
+    public boolean isEquipped() { return isEquipped; }
+    public void setEquipped(boolean equipped) { isEquipped = equipped; }
 
-    public int getDurability() {
-        return durability;
-    }
-
-    public boolean isEquipped() {
-        return isEquipped;
-    }
-
-    public void setEquipped(boolean equipped) {
-        isEquipped = equipped;
-    }
-
-    /**
-     * Reduce la durabilidad del arma al usarla
-     */
     public void reduceDurability() {
-        if (durability > 0) {
-            durability--;
-        }
+        if (durability > 0) durability--;
     }
 
-    public boolean isBroken() {
-        return durability <= 0;
-    }
+    public boolean isBroken() { return durability <= 0; }
 
     @Override
     public String use() {
         if (isBroken()) {
-            return "The " + getName() + " is out of durability and cannot be used.";
+            return "The " + getName() + " is out of durability.";
         }
         
         reduceDurability();
         if (isEquipped) {
             isEquipped = false;
-            return "You have unequipped " + getName() + ". Durability left: " + durability;
+            return "You unequipped " + getName() + ". Durability: " + durability;
         } else {
             isEquipped = true;
-            return "You have equipped " + getName() + ". Damage: " + damage + ". Durability: " + durability;
+            return "You equipped " + getName() + ". Damage: " + damage;
         }
     }
 
-    /**
-     * Método específico para usar el arma en combate
-     * @return Daño infligido (0 si el arma está rota)
-     */
     public int attack() {
-        if (isBroken()) {
-            return 0;
-        }
+        if (isBroken()) return 0;
         reduceDurability();
         return damage;
     }
@@ -75,4 +51,3 @@ public class Weapon extends Item {
         return super.toString() + String.format(" [Weapon - Damage: %d, %s]", damage, status);
     }
 }
-

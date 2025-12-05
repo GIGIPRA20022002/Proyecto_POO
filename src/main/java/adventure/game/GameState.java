@@ -13,7 +13,7 @@ public class GameState {
     public GameState(GameMap map) {
         this.map = map;
         this.current = map.getStart();
-        this.hero = new Hero("Adventurer", 10); // 10 HP inicial
+        this.hero = new Hero("Adventurer", 15); 
     }
 
     public GameMap getMap() { return map; }
@@ -24,14 +24,13 @@ public class GameState {
 
     public void setCurrent(Location loc) {
         this.current = loc;
-        hero.performAction(); // Cambiar de sala cuenta como acción
+        hero.performAction();
     }
 
     public Hero getHero() {
         return hero;
     }
 
-    // Método compatible con comandos existentes
     public Backpack getInventory() {
         return hero.getBackpack();
     }

@@ -10,13 +10,8 @@ public class Food extends Item {
         this.isConsumed = false;
     }
 
-    public int getHealthPoints() {
-        return healthPoints;
-    }
-
-    public boolean isConsumed() {
-        return isConsumed;
-    }
+    public int getHealthPoints() { return healthPoints; }
+    public boolean isConsumed() { return isConsumed; }
 
     @Override
     public String use() {
@@ -28,18 +23,10 @@ public class Food extends Item {
         return String.format("You have consumed %s and recovered %d health", getName(), healthPoints);
     }
 
-    /**
-     * Método específico para obtener los puntos de salud sin consumir la comida
-     * @return Puntos de salud que proporciona la comida
-     */
     public int getHealthBenefits() {
         return isConsumed ? 0 : healthPoints;
     }
 
-    /**
-     * Método para consumir la comida y obtener sus beneficios
-     * @return Puntos de salud obtenidos
-     */
     public int consume() {
         if (isConsumed) {
             return 0;
@@ -50,7 +37,7 @@ public class Food extends Item {
 
     @Override
     public String toString() {
-        String status = isConsumed ? "CONSUMIDO" : "Puntos de salud: +" + healthPoints;
-        return super.toString() + " [Comida - " + status + "]";
+        String status = isConsumed ? "CONSUMED" : "Health: +" + healthPoints;
+        return super.toString() + " [Food - " + status + "]";
     }
 }

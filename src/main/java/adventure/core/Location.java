@@ -22,13 +22,12 @@ public class Location {
         this.lockedExits = new HashMap<>();
     }
 
-    // ===== EXITS =====
     public void addExit(String dir, Location loc) {
         exits.put(dir, loc);
         lockedExits.put(dir, false);
     }
 
-    public Map<String, Location> getExits() {  // ← MÉTODO NUEVO
+    public Map<String, Location> getExits() {
         return exits;
     }
 
@@ -52,7 +51,6 @@ public class Location {
         return exits.get(dir);
     }
 
-    // ===== ITEMS =====
     public void addItem(Item item) { 
         items.add(item); 
     }
@@ -82,7 +80,6 @@ public class Location {
     
     public List<Item> getItems() { return items; }
 
-    // ===== MONSTER =====
     public void setMonster(Monster monster) {
         this.monster = monster;
     }
@@ -95,22 +92,14 @@ public class Location {
         return monster != null && monster.isAlive();
     }
 
-    // ===== GETTERS SIMPLES =====
-    public String getDescription() { 
-        return description; 
-    }
-    
-    public String getName() { 
-        return name; 
-    }
+    public String getDescription() { return description; }
+    public String getName() { return name; }
 
-    // ===== DESCRIPCIÓN COMPLETA =====
     public String getFullDescription() {
         StringBuilder sb = new StringBuilder();
         sb.append("=== ").append(name).append(" ===\n");
         sb.append(description).append("\n\n");
         
-        // Exits
         if (!exits.isEmpty()) {
             sb.append("Exits: ");
             for (String dir : exits.keySet()) {
@@ -121,7 +110,6 @@ public class Location {
             sb.append("\n");
         }
         
-        // Items
         if (!items.isEmpty()) {
             sb.append("Items here: ");
             for (Item item : items) {
@@ -130,7 +118,6 @@ public class Location {
             sb.append("\n");
         }
         
-        // Monster
         if (hasMonster()) {
             sb.append("There is a ").append(monster.getName()).append(" here!\n");
         }
