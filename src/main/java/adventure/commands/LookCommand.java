@@ -3,19 +3,14 @@ package adventure.commands;
 import adventure.game.*;
 import adventure.items.Item;
 
-
 public class LookCommand implements Command {
     public void execute(GameState state, String arg) {
-        state.getHero().performAction(); // Mirar consume acción
+        state.getHero().performAction();
         
         if (arg.isEmpty()) {
-            // Mostrar descripción completa de la sala
             System.out.println(state.getCurrent().getFullDescription());
-            
-            // Mostrar estado del héroe
-            System.out.println("\n" + state.getHero().getStatus());
+            System.out.println("\n" + state.getHero().getStatus()); // ← AQUÍ
         } else {
-            // Mirar un objeto específico
             Item item = state.getCurrent().getItem(arg);
             if (item != null) {
                 System.out.println("You examine the " + arg + ":");

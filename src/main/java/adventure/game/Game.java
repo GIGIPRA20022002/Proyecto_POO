@@ -70,14 +70,18 @@ public class Game {
     }
 
     private void showIntroduction() {
-        System.out.println("========================================");
-        System.out.println("         DUNGEON ADVENTURE");
-        System.out.println("========================================");
-        System.out.println("Your goal: Reach the final exit (Room 4).");
-        System.out.println("Type 'help' for commands.");
-        System.out.println("========================================");
-        System.out.println(state.getCurrent().getFullDescription());
-    }
+    System.out.println("========================================");
+    System.out.println("         DUNGEON ADVENTURE");
+    System.out.println("========================================");
+    System.out.println("Your goal: Reach the final exit (Room 4).");
+    System.out.println("Be careful: You can only carry ONE item at a time.");
+    System.out.println("Each action consumes your energy...");
+    System.out.println("Type 'restart' to start over anytime.");
+    System.out.println("Type 'help' for commands.");
+    System.out.println("========================================");
+    System.out.println(state.getCurrent().getFullDescription());
+    System.out.println("\n" + state.getHero().getStatus());
+}
 
     private boolean checkGameEnd() {
         if (!state.getHero().isAlive()) {

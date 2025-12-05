@@ -27,7 +27,6 @@ public class HelpCommand implements Command {
         System.out.println("  quit                - Exit game");
         System.out.println("========================================");
 
-        // All the remaining print statements were moved here:
         System.out.println("\n🗝️ KEYS & DOORS:");
         System.out.println("  • Key1 opens: north exit from Room 1");
         System.out.println("  • Key2 opens: east exit from Room 2");
@@ -39,10 +38,10 @@ public class HelpCommand implements Command {
         System.out.println("  • Fire Demon (Room 4): ONLY Fireball can defeat it!");
         System.out.println("========================================");
 
-        // Mostrar estado actual del jugador
+        // Mostrar estado actual del jugador ← ESTA PARTE FUE QUITADA
         System.out.println("\n" + state.getHero().getStatus());
         System.out.println("Fireball: " +
             (state.getHero().knowsFireball() ? "LEARNED ✓" : "NOT LEARNED ✗"));
         System.out.println("========================================");
     }
-} 
+}

@@ -50,5 +50,6 @@ public class MoveCommand implements Command {
         
         System.out.println("You move to the " + dir + ".");
         System.out.println("\n" + next.getFullDescription());
+        System.out.println("\n" + state.getHero().getStatus()); 
     }
 }
